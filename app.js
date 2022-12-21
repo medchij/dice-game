@@ -1,10 +1,13 @@
+//Тоглоом дууссан эсэхийг мэдэх хувьсагч
 var activePlayer ;
 var scores ;
 var roundScore;
+var isNewGame;
 // Шоог шидэх эвент листенер
 var diceDom = document.querySelector(".dice");
 initGame();
 function initGame(){
+  isNewGame = true;
   activePlayer = 0;
   scores = [0, 0];
   roundScore = 0;
@@ -23,32 +26,41 @@ function initGame(){
 }
 
 document.querySelector(".btn-roll").addEventListener("click", function() {
-  //1-6 доторх санамсаргүй нэг тоо гаргаж авна
-    var diceNumber = Math.floor(Math.random() * 6) + 1;
-//Шооны зургийг веб дээр гаргаж ирнэ. 
-  diceDom.style.display = "block";
-  //Буусан санамсаргүй тоонд харгалзах шооны зургийг веб дээр гаргаж ирнэ.
-  diceDom.src = "dice-" + diceNumber + ".png";
-  // Буусан тоо нь 1-ээс ялгаатай бол идэвхитэй тоглогчийн ээлжийн оноог нэмэгдүүлнэ. 
-if(diceNumber!==1){
-    //1-ээс ялгаатай тоо буулаа. Буусан тоог энд нэмнэ. 
-    roundScore = roundScore+ diceNumber;
-    document.getElementById("current-" +activePlayer).textContent= roundScore;
-}else{
-    switchToNextPlayer();
-}
+ if(isNewGame){
+   //1-6 доторх санамсаргүй нэг тоо гаргаж авна
+   var diceNumber = Math.floor(Math.random() * 6) + 1;
+   //Шооны зургийг веб дээр гаргаж ирнэ. 
+     diceDom.style.display = "block";
+     //Буусан санамсаргүй тоонд харгалзах шооны зургийг веб дээр гаргаж ирнэ.
+     diceDom.src = "dice-" + diceNumber + ".png";
+     // Буусан тоо нь 1-ээс ялгаатай бол идэвхитэй тоглогчийн ээлжийн оноог нэмэгдүүлнэ. 
+   if(diceNumber!==1){
+       //1-ээс ялгаатай тоо буулаа. Буусан тоог энд нэмнэ. 
+       roundScore = roundScore+ diceNumber;
+       document.getElementById("current-" +activePlayer).textContent= roundScore;
+   }else{
+       switchToNextPlayer();
+   }
+ }else{ alert("Тоглоом дууссан байна. New game товчийг дарж шинээр эхэлнэ үү")
+ }
 });
 document.querySelector(".btn-hold").addEventListener("click",function(){
-  //Уг тоглогчийн цуглуулсан ээлжний оноог глобаль дээр нь нэмж өгнө. 
-  scores[activePlayer]=scores[activePlayer]+roundScore;
-  document.getElementById("score-"+activePlayer).textContent=scores[activePlayer];
-  //Хожсон эсэхийг шалгах
-  if(scores[activePlayer]>=20){document.getElementById("name-"+activePlayer).textContent= "Winner!!!";
-  document.querySelector('.player-'+activePlayer+'-panel').classList.add('winner');
-  document.querySelector('.player-'+activePlayer+'-panel').classList.remove('active');
+ if(isNewGame){
+ //Уг тоглогчийн цуглуулсан ээлжний оноог глобаль дээр нь нэмж өгнө. 
+ scores[activePlayer]=scores[activePlayer]+roundScore;
+ document.getElementById("score-"+activePlayer).textContent=scores[activePlayer];
+ //Хожсон эсэхийг шалгах
+ if(scores[activePlayer]>=20){
+ isNewGame=false;
+   document.getElementById("name-"+activePlayer).textContent= "Winner!!!";
+ document.querySelector('.player-'+activePlayer+'-panel').classList.add('winner');
+ document.querySelector('.player-'+activePlayer+'-panel').classList.remove('active');
 }
-  else{;
-    switchToNextPlayer() };
+ else{;
+   switchToNextPlayer() };
+ }else{
+  alert("Тоглоом дууссан байна. New game товчийг дарж шинээр эхэлнэ үү")
+ }
 });
 
 function switchToNextPlayer(){
