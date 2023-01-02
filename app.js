@@ -50,7 +50,7 @@ document.querySelector(".btn-hold").addEventListener("click",function(){
  scores[activePlayer]=scores[activePlayer]+roundScore;
  document.getElementById("score-"+activePlayer).textContent=scores[activePlayer];
  //Хожсон эсэхийг шалгах
- if(scores[activePlayer]>=20){
+ if(scores[activePlayer]>=100){
  isNewGame=false;
    document.getElementById("name-"+activePlayer).textContent= "Winner!!!";
  document.querySelector('.player-'+activePlayer+'-panel').classList.add('winner');
